@@ -127,7 +127,9 @@
 #define IH_COMP_XZ		5	/* xz    Compression Used       */
 
 #define IH_MAGIC	0x27051956	/* Image Magic Number		*/
-#define IH_NMLEN		32	/* Image Name Length		*/
+#define IH_NMLEN	(32-4)		/* Image Name Length		*/
+#define PRODUCT_LEN  64
+#define VERSION_LEN 16
 
 /*
  * all data in network byte order (aka natural aka bigendian)
@@ -146,7 +148,20 @@ typedef struct image_header {
 	uint8_t		ih_type;	/* Image Type			*/
 	uint8_t		ih_comp;	/* Compression Type		*/
 	uint8_t		ih_name[IH_NMLEN];	/* Image Name		*/
+	uint32_t	ih_ksz;		/* Kernel Part Size		*/
+	uint8_t     product[PRODUCT_LEN];
+	uint8_t     sw_version[VERSION_LEN];
+	uint8_t     hw_version[VERSION_LEN];
 } image_header_t;
 
+typedef struct uboot_header {
+	uint32_t	ih_magic;	/* Image Header Magic Number	*/
+	uint32_t	ih_dcrc;	/* Image Header CRC Checksum	*/
+	uint32_t	ih_time;	/* Image Creation Timestamp	*/
+	uint32_t	ih_size;	/* Image Data Size		*/
+	uint8_t     product[PRODUCT_LEN];
+	uint8_t     sw_version[VERSION_LEN];
+	uint8_t     hw_version[VERSION_LEN];
+} uboot_header_t;
 
 #endif	/* __IMAGE_H__ */
